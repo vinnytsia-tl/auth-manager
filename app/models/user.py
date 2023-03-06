@@ -21,7 +21,6 @@ UPDATE_SQL = '''
         "reset_token" = ?
     WHERE "id" = ?
 '''
-FETCH_SQL = 'SELECT "id", "login", "bind_token", "email2", "phone", "telegram", "otp", "reset_token" FROM "users"'
 FETCH_BY_LOGIN_SQL = '''
     SELECT "id", "bind_token", "email2", "phone", "telegram", "otp", "reset_token"
     FROM "users"
