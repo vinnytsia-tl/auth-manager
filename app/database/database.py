@@ -12,15 +12,16 @@ class Database():
         self.thread_local = threading.local()
 
     def get_connection(self) -> sqlite3.Connection:
-        try:
-            return self.thread_local.connection
-        except AttributeError:
+        connection = getattr(self.thread_local, 'connection', None)
+
+        if connection is None:
             connection = sqlite3.connect(self.db_path)
             connection.execute('PRAGMA foreign_keys = ON;')
             connection.set_trace_callback(lambda sql: logger.debug('Executing SQL query: %s', sql))
             self.thread_local.connection = connection
             logger.debug('Opened new database connection')
-            return connection
+
+        return connection
 
     def execute(self, sql: str, params: tuple = ()) -> sqlite3.Cursor:
         return self.get_connection().execute(sql, params)
