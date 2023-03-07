@@ -16,4 +16,4 @@ max-line-length=125
 max-args=10
 
 [TYPECHECK]
-generated-members=cherrypy.session
+generated-members=cherrypy.session, cherrypy.tools.normalize_username
