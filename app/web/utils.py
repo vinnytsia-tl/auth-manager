@@ -18,7 +18,7 @@ def is_authenticated():
     return cursor.fetchone() is not None
 
 
-def authenticate(func: Callable):
+def authenticate(func: Callable[..., any]):
     def wrapper(*args, **kwargs):
         if not is_authenticated():
             raise cherrypy.HTTPRedirect("/auth")
