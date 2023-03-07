@@ -1,9 +1,8 @@
 import random
-import time
 import logging
 import cherrypy
 
-from app.web.utils import is_authenticated, authenticate, run_tg_send_mgs
+from app.web.utils import is_authenticated, authenticate, run_tg_send_mgs, save_session
 from app.config import Config
 from app.models import User
 
@@ -39,15 +38,7 @@ class Auth():
             logger.error("Invalid login or password")
             return self.index_template.render(errors=["Неправильний логін або пароль"])
 
-        with Config.database.get_connection() as connection:
-            cursor = connection.cursor()
-            agent = cherrypy.request.headers.get('User-Agent')
-            session_time = time.time()
-            exe_str = "DELETE FROM sessions WHERE username = ? OR session_id = ?;"
-            cursor.execute(exe_str, [username, cherrypy.session.id])
-            exe_str = "INSERT INTO sessions(session_id, username, agent, time) values(?, ?, ?, ?);"
-            cursor.execute(
-                exe_str, [cherrypy.session.id, username, agent, session_time])
+        save_session(username)
 
         cherrypy.session['username'] = username
         logger.info(f"User '{username}' successfully logged in")
