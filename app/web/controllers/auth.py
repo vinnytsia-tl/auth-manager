@@ -5,8 +5,12 @@ import cherrypy
 from app.web.utils import is_authenticated, authenticate, run_tg_send_mgs, save_session
 from app.config import Config
 from app.models import User
+from app.web.hooks import normalize_username
 
 logger = logging.getLogger(__name__)
+
+cherrypy.tools.normalize_username = cherrypy.Tool(
+    'before_handler', normalize_username)
 
 
 class Auth():
@@ -22,17 +26,13 @@ class Auth():
         return self.index_template.render()
 
     @cherrypy.expose
-    def login(self, username, password):
+    @cherrypy.tools.normalize_username()
+    def login(self, username, password, errors=None):
         if is_authenticated():
             raise cherrypy.HTTPRedirect("/user")
 
-        username_part = username.split('@')
-        if len(username_part) == 2:
-            if username_part[1] not in Config.login_supported_domain:
-                return self.index_template.render(errors=["Домененне ім'я логіну не підтримується"])
-            username = Config.ldap_descriptor.normalize_login(username_part[0])
-        else:
-            username = Config.ldap_descriptor.normalize_login(username)
+        if errors is not None:
+            return self.index_template.render(errors=errors)
 
         if not Config.ldap_descriptor.login(username, password):
             logger.error("Invalid login or password")
@@ -52,18 +52,14 @@ class Auth():
         return self.reset_template.render()
 
     @cherrypy.expose
-    def reset_post(self, username, tg_key=None, password=None):
+    @cherrypy.tools.normalize_username()
+    def reset_post(self, username, tg_key=None, password=None, errors=None):
         logger.info("Reset password request received for user: %s", username)
         if is_authenticated():
             raise cherrypy.HTTPRedirect("/user")
 
-        username_part = username.split('@')
-        if len(username_part) == 2:
-            if username_part[1] not in Config.login_supported_domain:
-                return self.reset_template.render(errors=["Домененне ім'я логіну не підтримується"])
-            username = Config.ldap_descriptor.normalize_login(username_part[0])
-        else:
-            username = Config.ldap_descriptor.normalize_login(username)
+        if errors is not None:
+            return self.reset_template.render(errors=errors)
 
         user = User.find(username)
         if user is None:
