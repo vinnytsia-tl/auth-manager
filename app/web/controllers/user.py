@@ -1,13 +1,14 @@
-import random
 import base64
 import logging
+import random
 from io import BytesIO
+
 import cherrypy
 import qrcode
 
-from app.web.utils import authenticate, run_tg_send_mgs
-from app.config import Config
 import app.models
+from app.config import Config
+from app.web.utils import authenticate, run_tg_send_mgs
 
 logger = logging.getLogger(__name__)
 

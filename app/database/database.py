@@ -1,7 +1,6 @@
+import logging
 import sqlite3
 import threading
-import logging
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,9 +1,10 @@
 from __future__ import annotations
-from typing import Callable
-import time
-import cherrypy
 
 import asyncio
+import time
+from typing import Callable
+
+import cherrypy
 from telegram.ext import ApplicationBuilder
 
 from app.config import Config

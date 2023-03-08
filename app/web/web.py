@@ -1,8 +1,10 @@
 import os
+
 import cherrypy
 
 from app.config import Config
-from .controllers import Auth, User, Root
+
+from .controllers import Auth, Root, User
 
 CHERRYPY_CONFIG = {
     '/': {

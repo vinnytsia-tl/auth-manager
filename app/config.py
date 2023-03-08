@@ -1,6 +1,7 @@
+import logging
 import os
 from typing import List
-import logging
+
 import dotenv
 import jinja2
 

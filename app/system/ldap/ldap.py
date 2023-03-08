@@ -1,4 +1,5 @@
 import logging
+
 import ldap3
 
 from .config import LDAPConfig
