@@ -1,0 +1,40 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui container">
+    {% include "templates/menu.html" %}
+    <div class="ui segment">
+        <div class="ui grid">
+            <div class="row">
+                <div class="column">
+                    <h2 class="ui header">Додати відновлення через Telegram</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="eight wide column">
+                    <p>Інструкція</p>
+                    <p>
+                    <ol>
+                        <li>Відкрийте Telegram бот за поcиланням або відскануйте QR код
+                            <a target="_blank" rel="noopener noreferrer" href="{{full_tg_url}}">{{tg_url}}</a>
+                        </li>
+                        <li>Натисніть кнопку <b>START</b> або введіть команду <b>/start</b></li>
+                        <li>Виконайте інструкції бота</li>
+                        <li>При запиті коду підтвердження, введіть: <b>{{user.bind_token}}</b></li>
+                    </ol>
+                    </p>
+                </div>
+                <div class="eight wide column">
+                    <img alt="qr" src="{{img_qr_data}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <a href="/user/reset_info">
+                        <input class="ui fluid large teal submit button" type="button" value="Назад">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

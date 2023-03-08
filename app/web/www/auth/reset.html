@@ -1,0 +1,69 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui middle aligned center aligned grid">
+    <div class="column login-column">
+        <h2 class="ui teal image header">
+            <img src="/static/images/logo.png" class="image">
+            <div class="content">
+                VTL Users Helper
+            </div>
+        </h2>
+        {% if form2 is not true %}
+        <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_post" method="post">
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui right labeled input">
+                        <label for="username" class="ui label"><i class="user icon"></i></label>
+                        <input type="text" placeholder="username" name="username">
+                        <div class="ui label">@vtl.edu</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <input class="ui fluid large teal submit button" type="submit" value="Підтвердити">
+                </div>
+            </div>
+            {% if errors is defined %}
+            <div class="ui error message">
+                <ul class="list">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </form>
+        {% endif %}
+        {% if tg_key is true %}
+        <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_post" method="post">
+            <div class="ui stacked segment">
+                <input type="email" name="username" value="{{username}}" hidden placeholder="Логін">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="number" min="0" name="tg_key" placeholder="Код підтвердження">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="Пароль" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="field">
+                    <input class="ui fluid large teal submit button" type="submit" value="Підтвердити">
+                </div>
+            </div>
+            {% if errors is defined %}
+            <div class="ui error message">
+                <ul class="list">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

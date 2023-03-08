@@ -1,0 +1,78 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui container">
+    {% include "templates/menu.html" %}
+    <div class="ui segment">
+        <div class="ui grid">
+            <div class="row">
+                <div class="eight wide column">
+                    <h2 class="ui header">Відновлення</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <table class="ui celled striped table">
+                        <thead>
+                            <tr>
+                                <th>Метод</th>
+                                <th>Статус</th>
+                                <th class="collapsing"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {% if user.telegram is none %}
+                                    <a href="/user/telegram_new">
+                                        {% endif %}
+                                        <button class="ui blue button" {{ '' if user.telegram is none else 'disabled'
+                                            }}>
+                                            <i class="telegram icon"></i>
+                                            Telegram
+                                        </button>
+                                        {% if user.telegram is none %}
+                                    </a>
+                                    {% endif %}
+                                </td>
+                                {% if user.telegram is none %}
+                                    <td>Не інтегровано!</td>
+                                {% else %}
+                                    <td>Підключено! ID аккаунту {{ user.telegram }}</td>
+                                {% endif %}
+
+                                <td>
+                                    <div class="ui buttons small">
+                                        <a href="/user/telegram_destroy" class="ui red button icon">
+                                            <i aria-hidden="true" class="trash alternate outline icon"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="green ui button" disabled>
+                                        <i class="comment icon"></i>
+                                        SMS
+                                    </button>
+                                </td>
+                                <td>Не підтримується</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="yellow ui button" disabled>
+                                        <i class="envelope icon"></i>
+                                        E-Mail
+                                    </button>
+                                </td>
+                                <td>Не підтримується</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui container">
+    {% include "templates/menu.html" %}
+    <div class="ui segment">
+        <h2 class="ui header">Профіль</h2>
+        <form class="ui form">
+            <div class="inline field">
+                <label class="four wide">Прізвище, Ім'я</label>
+                <input type="text" name="name" value="{{user.name}}" disabled>
+            </div>
+            <div class="inline field">
+                <label class="four wide">Логін</label>
+                <input type="text" name="description" value="{{user.login}}" disabled>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
