@@ -1,7 +1,7 @@
+import logging
 import os
 import re
 import sqlite3
-import logging
 
 from app.config import Config
 

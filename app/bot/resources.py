@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 SC_START_OK_TEXT = "Привіт! Спершу мені потрібно взнати твої дані. Надішли свій ліцейний логін."
 

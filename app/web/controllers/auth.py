@@ -1,11 +1,13 @@
-import random
 import logging
+import random
+
 import cherrypy
 
-from app.web.utils import is_authenticated, authenticate, run_tg_send_mgs, save_session
 from app.config import Config
 from app.models import User
 from app.web.hooks import normalize_username
+from app.web.utils import (authenticate, is_authenticated, run_tg_send_mgs,
+                           save_session)
 
 logger = logging.getLogger(__name__)
 
