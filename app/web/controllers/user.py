@@ -27,7 +27,7 @@ class User():
     def index(self):
         user = app.models.User.find(cherrypy.session['username'])
         params = {'user': user}
-        logger.info(f"User '{user.name}' accessed index page.")
+        logger.info("User '%s' accessed index page.", user.name)
         return self.index_template.render(params)
 
     @cherrypy.expose
@@ -36,7 +36,7 @@ class User():
     def reset_info(self):
         user = app.models.User.find(cherrypy.session['username'])
         params = {'user': user}
-        logger.info(f"User '{user.name}' accessed reset_info page.")
+        logger.info("User '%s' accessed reset_info page.", user.name)
         return self.reset_info_template.render(params)
 
     @cherrypy.expose
@@ -83,5 +83,5 @@ class User():
             run_tg_send_mgs(
                 tg_id, f"Інтеграцію для користувача {user.name} скасовано")
 
-        logger.info(f"User '{user.name}' destroyed telegram integration.")
+        logger.info("User '%s' destroyed telegram integration.", user.name)
         raise cherrypy.HTTPRedirect("/user/reset_info")
