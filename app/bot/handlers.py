@@ -55,7 +55,7 @@ class StartConversationState(Enum):
 
 
 async def sc_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartConversationState:
-    logger.debug(f"sc_start {update}")
+    logger.debug("sc_start %s", update)
 
     user = User.find_by_telegram(update.message.chat.id)
     if user is not None:
@@ -90,7 +90,7 @@ async def sc_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartC
 
 
 async def sc_set_login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartConversationState:
-    logger.debug(f"sc_set_login {update}")
+    logger.debug("sc_set_login %s", update)
 
     login = update.message.text.strip()
     user = User.find(login)
@@ -110,7 +110,7 @@ async def sc_set_login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> St
 
 
 async def sc_set_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartConversationState:
-    logger.debug(f"sc_set_confirmation {update}")
+    logger.debug("sc_set_confirmation %s", update)
 
     bind_token = update.message.text.strip()
     user = User.find(context.chat_data['login'])
@@ -135,7 +135,7 @@ async def sc_set_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def sc_save_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartConversationState:
-    logger.debug(f"sc_save_user {update}")
+    logger.debug("sc_save_user %s", update)
 
     user = User.find(context.chat_data['login'])
     user.telegram = context.chat_data['tg_id']
@@ -146,7 +146,7 @@ async def sc_save_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> St
 
 
 async def sc_reset_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartConversationState:
-    logger.debug(f"sc_reset_user {update}")
+    logger.debug("sc_reset_user %s", update)
 
     context.chat_data.clear()
 
@@ -155,13 +155,13 @@ async def sc_reset_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> S
 
 
 async def help(update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
-    logger.debug(f"help {update}")
+    logger.debug("help %s", update)
 
     await update.message.reply_text(resources.HELP_TEXT)
 
 
 async def whoami(update: Update, _context: CallbackContext) -> None:
-    logger.debug(f"whoami {update}")
+    logger.debug("whoami %s", update)
 
     user = User.find_by_telegram(update.message.chat_id)
     if user is None:

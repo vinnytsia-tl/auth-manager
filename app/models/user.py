@@ -56,17 +56,17 @@ class User:
                 cursor = db.execute(INSERT_SQL, (self.login, self.bind_token, self.email2,
                                     self.phone, self.telegram, self.otp, self.reset_token))
                 self.id = cursor.lastrowid
-                logger.info(f"User with login {self.login} created")
+                logger.info("User with login %s created", self.login)
             else:
                 db.execute(UPDATE_SQL, (self.login, self.bind_token, self.email2,   self.phone,
                                         self.telegram, self.otp, self.reset_token, self.id))
-                logger.info(f"User with login {self.login} updated")
+                logger.info("User with login %s updated", self.login)
 
     @staticmethod
     def find(login: str) -> User:
         ldap_user = Config.ldap_descriptor.getuser(login)
         if ldap_user is None:
-            logger.warning(f"User with login {login} not found")
+            logger.warning("User with login %s not found", login)
             return None
 
         upn, name, _ = ldap_user
@@ -79,7 +79,7 @@ class User:
         user = User(login=upn, name=name, id=data[0],
                     bind_token=data[1], email2=data[2], phone=data[3],
                     telegram=data[4], otp=data[5], reset_token=data[6])
-        logger.info(f"User found: {user}")
+        logger.info("User found: %s", user)
         return user
 
     @staticmethod
@@ -87,9 +87,9 @@ class User:
         cursor = Config.database.execute(FETCH_BY_TELEGRAM_SQL, (tg_id,))
         data = cursor.fetchone()
         if data is None:
-            logger.info(f"User not found by Telegram ID: {tg_id}")
+            logger.info("User not found by Telegram ID: %d", tg_id)
             return None
 
         user = User.find(data[0])
-        logger.info(f"User found by Telegram ID: {user.name}")
+        logger.info("User found by Telegram ID: %s", user.name)
         return user

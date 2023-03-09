@@ -43,7 +43,7 @@ class Auth():
         save_session(username)
 
         cherrypy.session['username'] = username
-        logger.info(f"User '{username}' successfully logged in")
+        logger.info("User '%s' successfully logged in", username)
         raise cherrypy.HTTPRedirect("/user")
 
     @cherrypy.expose
@@ -81,25 +81,25 @@ class Auth():
                     logger.info(
                         "Password reset successful for user: %s", username)
                     raise cherrypy.HTTPRedirect("/auth")
-                else:
-                    logger.error(
-                        "Error saving password for user: %s", username)
-                    return self.reset_template.render(
-                        errors=["Помилка збереження паролю, можливо він не відповідає вимогам."])
-            else:
-                logger.error("Incorrect reset token for user: %s", username)
-                return self.reset_template.render(errors=["Хибний код підтвердження, спробуйте ще раз."])
-        else:
-            user.reset_token = random.randrange(1_000_000, 9_999_999)
-            user.save()
 
-            run_tg_send_mgs(user.telegram,
-                            f"Ваш код підтвердження {user.reset_token}")
-            logger.info(
-                "Reset token sent via telegram for user: %s", username)
+                logger.error(
+                    "Error saving password for user: %s", username)
+                return self.reset_template.render(
+                    errors=["Помилка збереження паролю, можливо він не відповідає вимогам."])
 
-            params = {'form2': True, 'tg_key': True, 'username': username}
-            return self.reset_template.render(params)
+            logger.error("Incorrect reset token for user: %s", username)
+            return self.reset_template.render(errors=["Хибний код підтвердження, спробуйте ще раз."])
+
+        user.reset_token = random.randrange(1_000_000, 9_999_999)
+        user.save()
+
+        run_tg_send_mgs(user.telegram,
+                        f"Ваш код підтвердження {user.reset_token}")
+        logger.info(
+            "Reset token sent via telegram for user: %s", username)
+
+        params = {'form2': True, 'tg_key': True, 'username': username}
+        return self.reset_template.render(params)
 
     @cherrypy.expose
     @authenticate
