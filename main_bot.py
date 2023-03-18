@@ -11,5 +11,9 @@ def main_bot():
     Bot().start()
 
 
+def exit_bot():
+    Bot.stop()
+
+
 if __name__ == '__main__':
     main_bot()

@@ -42,3 +42,6 @@ class Bot:
 
     def start(self) -> None:
         self.application.run_polling()
+
+    def stop(self) -> None:
+        self.application.stop()
