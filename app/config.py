@@ -30,8 +30,16 @@ class Config:
     jinja_env: jinja2.Environment = None
 
     @staticmethod
+    def __load_env():
+        file_path = os.path.realpath(os.path.dirname(__file__))
+        app_path = os.path.join(file_path, "..")
+        env_path = os.path.join(app_path, ".env")
+
+        dotenv.load_dotenv(dotenv_path=env_path)
+
+    @staticmethod
     def load():
-        dotenv.load_dotenv()
+        Config.__load_env()
 
         Config.production = os.getenv('SERVICE_ENVIRONMENT') == 'production'
         Config.telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
