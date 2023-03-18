@@ -11,5 +11,9 @@ def main_web():
     Web.start()
 
 
+def exit_web():
+    Web.stop()
+
+
 if __name__ == '__main__':
     main_web()
