@@ -1,25 +1,25 @@
-import os
-
 import cherrypy
 
 from app.config import Config
 
 from .controllers import Auth, Root, User
 
-CHERRYPY_CONFIG = {
-    '/': {
-        'tools.secureheaders.on': True,
-        'tools.sessions.on': True,
-        'tools.sessions.httponly': True,
-        'tools.staticdir.root': os.path.abspath(os.getcwd()) + '/app/web',
-        'tools.trailing_slash.on': False,
-        'tools.response_headers.on': True,
-    },
-    '/static': {
-        'tools.staticdir.on': True,
-        'tools.staticdir.dir': './static',
-    },
-}
+
+def get_cherrypy_config():
+    return {
+        '/': {
+            'tools.secureheaders.on': True,
+            'tools.sessions.on': True,
+            'tools.sessions.httponly': True,
+            'tools.staticdir.root': Config.web_static_dir_root_path,
+            'tools.trailing_slash.on': False,
+            'tools.response_headers.on': True,
+        },
+        '/static': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': './static',
+        },
+    }
 
 
 class Web:
@@ -41,15 +41,16 @@ class Web:
             'log.access_file': Config.log_directory + '/web_access.log',
         })
 
+        config = get_cherrypy_config()
         if Config.production:
-            CHERRYPY_CONFIG['/']['tools.sessions.secure'] = True
+            config['/']['tools.sessions.secure'] = True
             cherrypy.server.ssl_module = 'builtin'
             cherrypy.server.ssl_certificate = Config.web_ssl_certificate
             cherrypy.server.ssl_private_key = Config.web_ssl_private_key
             cherrypy.server.ssl_certificate_chain = Config.web_ssl_certificate_chain
 
         cherrypy.engine.subscribe('start', Config.database.cleanup)
-        cherrypy.tree.mount(app, '/', CHERRYPY_CONFIG)
+        cherrypy.tree.mount(app, '/', config)
         cherrypy.engine.start()
         cherrypy.engine.block()
 

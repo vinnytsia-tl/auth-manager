@@ -19,6 +19,7 @@ class Config:
     web_listen_host: str = None
     web_listen_port: int = None
     web_thread_pool: int = None
+    web_static_dir_root_path: str = None
     web_ssl_certificate: str = None
     web_ssl_private_key: str = None
     web_ssl_certificate_chain: str = None
@@ -41,6 +42,7 @@ class Config:
         Config.web_listen_host = os.getenv('WEB_LISTEN_HOST')
         Config.web_listen_port = int(os.getenv('WEB_LISTEN_PORT'))
         Config.web_thread_pool = int(os.getenv('WEB_THREAD_POOL_SIZE', '1'))
+        Config.web_static_dir_root_path = os.getenv('WEB_STATIC_DIR_ROOT_PATH')
         Config.web_ssl_certificate = os.getenv('WEB_SSL_CERTIFICATE')
         Config.web_ssl_private_key = os.getenv('WEB_SSL_PRIVATE_KEY')
         Config.web_ssl_certificate_chain = os.getenv('WEB_SSL_CERTIFICATE_CHAIN')
