@@ -12,7 +12,7 @@ import win32event
 import win32service
 import win32serviceutil
 
-from main_web import main_web
+from main_web import main_web, exit_web
 
 # pylint: enable=wrong-import-position
 
@@ -28,6 +28,7 @@ class AuthWebSvc(win32serviceutil.ServiceFramework):
     def SvcStop(self):
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
         win32event.SetEvent(self.hWaitStop)
+        exit_web()
 
     def SvcDoRun(self):
         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
