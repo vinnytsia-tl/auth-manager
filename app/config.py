@@ -10,24 +10,24 @@ from app.system.ldap import LDAP, LDAPConfig
 
 
 class Config:
-    production: bool = None
-    telegram_bot_token: str = None
-    telegram_bot_url: str = None
-    developer_chat_id: int = None
-    log_directory: str = None
-    log_level: str = None
-    web_listen_host: str = None
-    web_listen_port: int = None
-    web_thread_pool: int = None
-    web_static_dir_root_path: str = None
-    web_ssl_certificate: str = None
-    web_ssl_private_key: str = None
-    web_ssl_certificate_chain: str = None
-    session_max_time: int = None
-    login_supported_domain: List[str] = None
-    database: Database = None
-    ldap_descriptor: LDAP = None
-    jinja_env: jinja2.Environment = None
+    production: bool
+    telegram_bot_token: str
+    telegram_bot_url: str
+    developer_chat_id: int
+    log_directory: str
+    log_level: str
+    web_listen_host: str
+    web_listen_port: int
+    web_thread_pool: int
+    web_static_dir_root_path: str
+    web_ssl_certificate: str
+    web_ssl_private_key: str
+    web_ssl_certificate_chain: str
+    session_max_time: int
+    login_supported_domain: List[str]
+    database: Database
+    ldap_descriptor: LDAP
+    jinja_env: jinja2.Environment
 
     @staticmethod
     def __load_env():
