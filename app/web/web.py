@@ -1,9 +1,12 @@
+import logging
+
 import cherrypy
 
 from app.config import Config
 
 from .controllers import Auth, Root, User
 
+logger = logging.getLogger(__name__)
 
 def get_cherrypy_config():
     return {
@@ -25,9 +28,13 @@ def get_cherrypy_config():
 class Web:
     @staticmethod
     def start():
+        logger.info('Starting web server...')
+
         app = Root()
         app.auth = Auth()
         app.user = User()
+
+        logger.debug("Created app controllers.")
 
         cherrypy.config.update({
             'server.socket_host': Config.web_listen_host,
@@ -40,6 +47,7 @@ class Web:
             'log.error_file': Config.log_directory + '/web_error.log',
             'log.access_file': Config.log_directory + '/web_access.log',
         })
+        logger.debug('Web server config updated.')
 
         config = get_cherrypy_config()
         if Config.production:
@@ -50,8 +58,11 @@ class Web:
             cherrypy.server.ssl_certificate_chain = Config.web_ssl_certificate_chain
 
         cherrypy.engine.subscribe('start', Config.database.cleanup)
+        logger.debug('Web engine subscribed.')
         cherrypy.tree.mount(app, '/', config)
+        logger.debug('Web tree mounted.')
         cherrypy.engine.start()
+        logger.info('Web server started.')
         cherrypy.engine.block()
 
     @staticmethod
@@ -61,6 +72,8 @@ class Web:
     @staticmethod
     @cherrypy.tools.register('before_finalize', priority=60)
     def secureheaders():
+        logger.debug('Execute secureheaders hook')
+
         headers = cherrypy.response.headers
         headers['X-Frame-Options'] = 'DENY'
         headers['X-XSS-Protection'] = '1; mode=block'
