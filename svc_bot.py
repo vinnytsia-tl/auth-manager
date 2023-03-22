@@ -12,7 +12,7 @@ import win32event
 import win32service
 import win32serviceutil
 
-from main_bot import main_bot, exit_bot
+from main_bot import exit_bot, main_bot
 
 # pylint: enable=wrong-import-position
 
