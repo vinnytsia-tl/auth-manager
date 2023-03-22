@@ -8,6 +8,7 @@ from .controllers import Auth, Root, User
 
 logger = logging.getLogger(__name__)
 
+
 def get_cherrypy_config():
     return {
         '/': {

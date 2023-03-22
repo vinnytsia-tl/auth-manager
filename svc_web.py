@@ -16,6 +16,7 @@ from main_web import exit_web, main_web
 
 # pylint: enable=wrong-import-position
 
+
 class AuthWebSvc(win32serviceutil.ServiceFramework):
     _svc_name_ = "AuthWebSvc"
     _svc_display_name_ = "Auth manager web Service"
