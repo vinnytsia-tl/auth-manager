@@ -12,7 +12,7 @@ import win32event
 import win32service
 import win32serviceutil
 
-from main_web import main_web, exit_web
+from main_web import exit_web, main_web
 
 # pylint: enable=wrong-import-position
 
