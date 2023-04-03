@@ -18,6 +18,7 @@ class Config:
     log_level: str
     web_listen_host: str
     web_listen_port: int
+    web_proxy_base: str
     web_thread_pool: int
     web_static_dir_root_path: str
     web_ssl_certificate: str
@@ -49,6 +50,7 @@ class Config:
         Config.log_level = os.environ.get('LOG_LEVEL', logging.DEBUG)
         Config.web_listen_host = os.getenv('WEB_LISTEN_HOST')
         Config.web_listen_port = int(os.getenv('WEB_LISTEN_PORT'))
+        Config.web_proxy_base = os.getenv('WEB_PROXY_BASE')
         Config.web_thread_pool = int(os.getenv('WEB_THREAD_POOL_SIZE', '1'))
         Config.web_static_dir_root_path = os.getenv('WEB_STATIC_DIR_ROOT_PATH')
         Config.web_ssl_certificate = os.getenv('WEB_SSL_CERTIFICATE')
