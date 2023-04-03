@@ -5,6 +5,7 @@ sys.path.insert(2, os.path.join(sys.base_prefix, 'DLLs'))
 
 # pylint: disable=wrong-import-position
 
+import asyncio
 import socket
 
 import servicemanager
@@ -35,6 +36,13 @@ class AuthBotSvc (win32serviceutil.ServiceFramework):
         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
                               servicemanager.PYS_SERVICE_STARTED,
                               (self._svc_name_, ''))
+        if (
+            sys.platform == "win32"
+            and sys.version_info.major == 3
+            and sys.version_info.minor >= 8
+        ):
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
         main_bot()
 
 
