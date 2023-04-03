@@ -26,6 +26,24 @@ def get_cherrypy_config():
     }
 
 
+def enable_ssl():
+    if Config.web_ssl_certificate is None:
+        logger.info('SSL certificate is not specified. Run server in HTTP mode.')
+        return
+
+    if Config.web_ssl_private_key is None:
+        logger.info('SSL private key is not specified. Run server in HTTP mode.')
+        return
+
+    cherrypy.server.ssl_module = 'builtin'
+    cherrypy.server.ssl_certificate = Config.web_ssl_certificate
+    cherrypy.server.ssl_private_key = Config.web_ssl_private_key
+
+    if Config.web_ssl_certificate_chain is not None:
+        logger.debug('SSL certificate chain is not specified.')
+        cherrypy.server.ssl_certificate_chain = Config.web_ssl_certificate_chain
+
+
 class Web:
     @staticmethod
     def start():
@@ -48,15 +66,12 @@ class Web:
             'log.error_file': Config.log_directory + '/web_error.log',
             'log.access_file': Config.log_directory + '/web_access.log',
         })
+        enable_ssl()
         logger.debug('Web server config updated.')
 
         config = get_cherrypy_config()
         if Config.production:
             config['/']['tools.sessions.secure'] = True
-            cherrypy.server.ssl_module = 'builtin'
-            cherrypy.server.ssl_certificate = Config.web_ssl_certificate
-            cherrypy.server.ssl_private_key = Config.web_ssl_private_key
-            cherrypy.server.ssl_certificate_chain = Config.web_ssl_certificate_chain
 
         cherrypy.engine.subscribe('start', Config.database.cleanup)
         logger.debug('Web engine subscribed.')
