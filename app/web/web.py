@@ -55,7 +55,7 @@ class Web:
 
         logger.debug("Created app controllers.")
 
-        cherrypy.config.update({
+        server_config = {
             'server.socket_host': Config.web_listen_host,
             'server.socket_port': Config.web_listen_port,
             'server.thread_pool': Config.web_thread_pool,
@@ -65,7 +65,13 @@ class Web:
             'log.screen.level': Config.log_level,
             'log.error_file': Config.log_directory + '/web_error.log',
             'log.access_file': Config.log_directory + '/web_access.log',
-        })
+        }
+
+        if Config.web_proxy_base is not None:
+            server_config['tools.proxy.on'] = True
+            server_config['tools.proxy.base'] = Config.web_proxy_base
+
+        cherrypy.config.update(server_config)
         enable_ssl()
         logger.debug('Web server config updated.')
 
