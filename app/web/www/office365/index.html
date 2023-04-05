@@ -1,0 +1,40 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui container">
+    {% include "templates/menu.html" %}
+    <div class="ui segment">
+        <h2 class="ui header">Інструкція з встановлення Office 365</h2>
+        <ol>
+            <li>
+                <p>Відкрийте Office 365 за посиланням <a
+                        href="https://portal.office.com/">https://portal.office.com/</a> та введіть логін у форматі
+                    <code class="ui label">персональний логін@vtlin.onmicrosoft.com</code>.
+                </p>
+                <p><img src="/static/images/office365/02.jpg" alt="02.jpg"></p>
+            </li>
+            <li>
+                <p>Введіть пароль, такий же як і до комп'ютера в ліцеї.</p>
+                <p><img src="/static/images/office365/03.jpg" alt="03.jpg"></p>
+            </li>
+            <li>
+                <p>У правому верхньому куту сайту обреріть <code class="ui label">Встановити додатки</code> та натисніть
+                    <code>Додатки Microsoft 365</code>.
+                </p>
+                <p><img src="/static/images/office365/04.jpg" alt="04.jpg"></p>
+            </li>
+            <li>
+                <p>Дочекайтесь завантаження інсталятора <code class="ui label">OfficeSetup.exe</code>.</p>
+                <p><img src="/static/images/office365/05.jpg" alt="05.jpg"></p>
+            </li>
+            <li>
+                <p>Запустіть інсталятор <code class="ui label">OfficeSetup.exe</code> та очікуйте завершення процесу.
+                </p>
+            </li>
+            <li>
+                <p>Відкрийте будь який додаток з пакету Office 365. Якщо з'явиться повідомлення про активацію,
+                    використайте аккаунт Office 365 для активації.</p>
+            </li>
+        </ol>
+    </div>
+</div>
+{% endblock %}
