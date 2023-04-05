@@ -4,7 +4,7 @@ import cherrypy
 
 from app.config import Config
 
-from .controllers import Auth, Root, User
+from .controllers import Auth, Root, User, Office365
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +52,7 @@ class Web:
         app = Root()
         app.auth = Auth()
         app.user = User()
+        app.office365 = Office365()
 
         logger.debug("Created app controllers.")
 
