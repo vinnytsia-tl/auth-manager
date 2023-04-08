@@ -12,7 +12,7 @@ def main_bot():
 
 
 def exit_bot():
-    Bot.stop()
+    Bot().stop()
 
 
 if __name__ == '__main__':
