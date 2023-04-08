@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
@@ -11,10 +12,21 @@ from .handlers import StartConversationState
 logger = logging.getLogger(__name__)
 
 
-class Bot:
+class SingletonMeta(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class Bot(metaclass=SingletonMeta):
     def __init__(self) -> None:
         logger.info("Initializing bot")
         self.application = Application.builder().token(Config.telegram_bot_token).build()
+        self.loop = None
         self.__register_handlers__()
 
     def __register_handlers__(self) -> None:
@@ -50,8 +62,11 @@ class Bot:
 
     def start(self) -> None:
         logger.info('Starting bot polling')
+        self.loop = asyncio.get_event_loop()
         self.application.run_polling()
+        logger.debug('Run polling exited')
 
     def stop(self) -> None:
         logger.info('Stopping bot')
-        self.application.stop()
+        self.loop.stop()
+        logger.debug('Stopped current event loop')
