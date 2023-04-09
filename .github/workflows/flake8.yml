@@ -1,0 +1,17 @@
+name: Run flake8
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      - run: pip install -r requirements.txt -r requirements.dev.txt
+      - run: flake8 .
