@@ -5,15 +5,15 @@ sys.path.insert(2, os.path.join(sys.base_prefix, 'DLLs'))
 
 # pylint: disable=wrong-import-position
 
-import asyncio
-import socket
+import asyncio  # noqa:E402
+import socket  # noqa:E402
 
-import servicemanager
-import win32event
-import win32service
-import win32serviceutil
+import servicemanager  # noqa:E402
+import win32event  # noqa:E402
+import win32service  # noqa:E402
+import win32serviceutil  # noqa:E402
 
-from main_bot import exit_bot, main_bot
+from main_bot import exit_bot, main_bot  # noqa:E402
 
 # pylint: enable=wrong-import-position
 
