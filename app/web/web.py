@@ -4,7 +4,7 @@ import cherrypy
 
 from app.config import Config
 
-from .controllers import Auth, Root, User, Office365
+from .controllers import Auth, Office365, Root, User
 
 logger = logging.getLogger(__name__)
 
