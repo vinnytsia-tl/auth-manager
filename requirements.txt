@@ -3,5 +3,5 @@ pyasn1==0.5.0
 python-dotenv==1.0.0
 CherryPy==18.8.0
 Jinja2==3.1.2
-python-telegram-bot==20.2
+python-telegram-bot==20.3
 qrcode==7.4.2
