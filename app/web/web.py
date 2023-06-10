@@ -23,6 +23,10 @@ def get_cherrypy_config():
             'tools.staticdir.on': True,
             'tools.staticdir.dir': './static',
         },
+        '/.well-known': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': './static/.well-known',
+        },
     }
 
 
