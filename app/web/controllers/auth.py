@@ -3,16 +3,12 @@ import random
 
 import cherrypy
 
+from app.common.web.utils import is_authenticated, save_session
 from app.config import Config
 from app.models import User
-from app.web.hooks import normalize_username
-from app.web.utils import (authenticate, is_authenticated, run_tg_send_mgs,
-                           save_session)
+from app.web.utils import run_tg_send_msg
 
 logger = logging.getLogger(__name__)
-
-cherrypy.tools.normalize_username = cherrypy.Tool(
-    'before_handler', normalize_username)
 
 
 class Auth():
@@ -93,7 +89,7 @@ class Auth():
         user.reset_token = random.randrange(1_000_000, 9_999_999)
         user.save()
 
-        run_tg_send_mgs(user.telegram,
+        run_tg_send_msg(user.telegram,
                         f"Ваш код підтвердження {user.reset_token}")
         logger.info(
             "Reset token sent via telegram for user: %s", username)
@@ -102,7 +98,7 @@ class Auth():
         return self.reset_template.render(params)
 
     @cherrypy.expose
-    @authenticate
+    @cherrypy.tools.authenticate()
     def logout(self):
         with Config.database.get_connection() as connection:
             connection.execute(

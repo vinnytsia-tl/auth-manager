@@ -4,6 +4,7 @@ import logging
 from dataclasses import dataclass
 from typing import Optional
 
+from app.common.ldap import LDAPException
 from app.config import Config
 
 INSERT_SQL = '''
@@ -64,26 +65,28 @@ class User:
 
     @staticmethod
     def find(login: str) -> User:
-        ldap_user = Config.ldap_descriptor.getuser(login)
-        if ldap_user is None:
-            logger.warning("User with login %s not found", login)
-            return None
-
-        upn, name, _ = ldap_user
-
-        cursor = Config.database.execute(FETCH_BY_LOGIN_SQL, (upn,))
+        ldap_user = Config.ldap_descriptor.get_user(login)
+        cursor = Config.database.execute(FETCH_BY_LOGIN_SQL, (ldap_user.user_principal_name,))
         data = cursor.fetchone()
         if data is None:
-            return User(login=upn, name=name)
+            return User(login=ldap_user.user_principal_name, name=ldap_user.display_name)
 
-        user = User(login=upn, name=name, id=data[0],
+        user = User(login=ldap_user.user_principal_name, name=ldap_user.display_name, id=data[0],
                     bind_token=data[1], email2=data[2], phone=data[3],
                     telegram=data[4], otp=data[5], reset_token=data[6])
         logger.info("User found: %s", user)
         return user
 
     @staticmethod
-    def find_by_telegram(tg_id: int) -> User:
+    def try_find(login: str) -> Optional[User]:
+        try:
+            return User.find(login)
+        except LDAPException as exception:
+            logger.error("User.find(%s) failed: %s", login, exception)
+            return None
+
+    @staticmethod
+    def try_find_by_telegram(tg_id: int) -> Optional[User]:
         cursor = Config.database.execute(FETCH_BY_TELEGRAM_SQL, (tg_id,))
         data = cursor.fetchone()
         if data is None:

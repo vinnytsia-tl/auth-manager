@@ -8,7 +8,7 @@ import qrcode
 
 import app.models
 from app.config import Config
-from app.web.utils import authenticate, run_tg_send_mgs
+from app.web.utils import run_tg_send_msg
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ class User():
 
     @cherrypy.expose
     @cherrypy.tools.allow(methods=['GET'])
-    @authenticate
+    @cherrypy.tools.authenticate()
     def index(self):
         user = app.models.User.find(cherrypy.session['username'])
         params = {'user': user}
@@ -32,7 +32,7 @@ class User():
 
     @cherrypy.expose
     @cherrypy.tools.allow(methods=['GET'])
-    @authenticate
+    @cherrypy.tools.authenticate()
     def reset_info(self):
         user = app.models.User.find(cherrypy.session['username'])
         params = {'user': user}
@@ -41,7 +41,7 @@ class User():
 
     @cherrypy.expose
     @cherrypy.tools.allow(methods=['GET'])
-    @authenticate
+    @cherrypy.tools.authenticate()
     def telegram_new(self):
         user = app.models.User.find(cherrypy.session['username'])
         user.bind_token = random.randrange(1_000_000, 9_999_999)
@@ -72,7 +72,7 @@ class User():
 
     @cherrypy.expose
     @cherrypy.tools.allow(methods=['GET'])
-    @authenticate
+    @cherrypy.tools.authenticate()
     def telegram_destroy(self):
         user = app.models.User.find(cherrypy.session['username'])
         if user.telegram is not None:
@@ -80,7 +80,7 @@ class User():
             user.telegram = None
             user.save()
 
-            run_tg_send_mgs(
+            run_tg_send_msg(
                 tg_id, f"Інтеграцію для користувача {user.name} скасовано")
 
         logger.info("User '%s' destroyed telegram integration.", user.name)

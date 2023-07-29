@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from typing import Any, Optional
 
 from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
                           ConversationHandler, MessageHandler, filters)
@@ -13,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 class SingletonMeta(type):
-    _instances = {}
+    _instances = dict['SingletonMeta', 'SingletonMeta']()
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args: tuple[Any, ...], **kwargs: Any):
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
@@ -23,6 +24,8 @@ class SingletonMeta(type):
 
 
 class Bot(metaclass=SingletonMeta):
+    loop: Optional[asyncio.AbstractEventLoop]
+
     def __init__(self) -> None:
         logger.info("Initializing bot")
         self.application = Application.builder().token(Config.telegram_bot_token).build()
@@ -55,7 +58,7 @@ class Bot(metaclass=SingletonMeta):
         self.application.add_handler(CommandHandler(
             'whoami', handlers.whoami, block=False))
         self.application.add_handler(CommandHandler(
-            'help', handlers.help, block=False))
+            'help', handlers.help_cmd, block=False))
 
         logger.debug("Registering error handlers")
         self.application.add_error_handler(handlers.error_handler)
@@ -68,5 +71,8 @@ class Bot(metaclass=SingletonMeta):
 
     def stop(self) -> None:
         logger.info('Stopping bot')
-        self.loop.stop()
+        if self.loop is None:
+            logger.warning('Bot appears to not be running (loop is None)')
+        else:
+            self.loop.stop()
         logger.debug('Stopped current event loop')

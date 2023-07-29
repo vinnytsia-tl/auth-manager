@@ -1,0 +1,3 @@
+[submodule "app/common"]
+	path = app/common
+	url = https://github.com/vinnytsia-tl/py-common.git
