@@ -50,6 +50,34 @@
                             </tr>
                             <tr>
                                 <td>
+                                    {% if user.otp is none %}
+                                    <a href="/user/otp_new">
+                                        {% endif %}
+                                        <button class="ui blue button" {{ '' if user.otp is none else 'disabled'
+                                            }}>
+                                            <i class="qrcode icon"></i>
+                                            OTP
+                                        </button>
+                                        {% if user.otp is none %}
+                                    </a>
+                                    {% endif %}
+                                    (Microsoft Authenticator або Google Authenticator)
+                                </td>
+                                {% if user.otp is none %}
+                                    <td>Не інтегровано!</td>
+                                {% else %}
+                                    <td>Підключено!</td>
+                                {% endif %}
+                                <td>
+                                    <div class="ui buttons small">
+                                        <a href="/user/otp_destroy" class="ui red button icon">
+                                            <i aria-hidden="true" class="trash alternate outline icon"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <button class="green ui button" disabled>
                                         <i class="comment icon"></i>
                                         SMS

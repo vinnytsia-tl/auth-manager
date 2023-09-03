@@ -8,7 +8,7 @@
                 VTL Users Helper
             </div>
         </h2>
-        {% if form2 is not true %}
+        {% if type_form is not true %}
         <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_post" method="post">
             <div class="ui stacked segment">
                 <div class="field">
@@ -32,22 +32,22 @@
             </div>
             {% endif %}
         </form>
-        {% endif %}
-        {% if tg_key is true %}
-        <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_post" method="post">
+        {% else %}
+        <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_typed" method="post">
             <div class="ui stacked segment">
-                <input type="email" name="username" value="{{username}}" hidden placeholder="Логін">
                 <div class="field">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
-                        <input type="number" min="0" name="tg_key" placeholder="Код підтвердження">
+                    <div class="ui right labeled input">
+                        <label for="username" class="ui label"><i class="user icon"></i></label>
+                        <input type="text" placeholder="username" name="username" value="{{user.login}}" readonly>
+                        <div class="ui label">@vtl.edu</div>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
-                        <input type="password" name="password" placeholder="Пароль" autocomplete="new-password">
-                    </div>
+                    <select class="ui fluid dropdown" name="bind_dest_id" required>
+                        {% for bind_dest in bind_dest_list %}
+                            <option value="{{bind_dest.value}}">{{bind_dest.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="field">
                     <input class="ui fluid large teal submit button" type="submit" value="Підтвердити">

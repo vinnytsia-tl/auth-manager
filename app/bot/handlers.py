@@ -10,7 +10,7 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes, ConversationHandler
 
 from ..config import Config
-from ..models import User
+from ..models import User, UserBindDestination
 from . import resources
 
 logger = logging.getLogger(__name__)
@@ -75,10 +75,14 @@ async def sc_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> StartC
             await update.message.reply_text(resources.SC_START_OK_TEXT)
             return StartConversationState.LOGIN
 
-        if user.bind_token != bind_token:
-            await update.message.reply_text(resources.SC_CONFIRMATION_ERROR_TEXT)
+        if user.bind_token != bind_token or user.bind_dest != UserBindDestination.TELEGRAM:
+            if user.bind_dest != UserBindDestination.TELEGRAM:
+                await update.message.reply_text(resources.SC_CONFIRMATION_NTG_ERROR_TEXT)
+            else:
+                await update.message.reply_text(resources.SC_CONFIRMATION_ERROR_TEXT)
             await update.message.reply_text(resources.SC_START_OK_TEXT)
             user.bind_token = None
+            user.bind_dest = UserBindDestination.NONE
             user.save()
             return StartConversationState.LOGIN
 

@@ -1,0 +1,43 @@
+{% extends 'templates/wrapper.html' %}
+{% block body %}
+<div class="ui middle aligned center aligned grid">
+    <div class="column login-column">
+        <h2 class="ui teal image header">
+            <img src="/static/images/logo.png" class="image">
+            <div class="content">
+                VTL Users Helper
+            </div>
+        </h2>
+        <form class="ui form {{ 'error' if errors is defined else '' }} " action="/auth/reset_save" method="post">
+            <div class="ui stacked segment">
+                <input type="email" name="username" value="{{username}}" hidden>
+                <input type="text" name="bind_dest_id" value="{{bind_dest_id}}" hidden>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="number" min="0" name="reset_key" placeholder="Код підтвердження">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="Пароль" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="field">
+                    <input class="ui fluid large teal submit button" type="submit" value="Підтвердити">
+                </div>
+            </div>
+            {% if errors is defined %}
+            <div class="ui error message">
+                <ul class="list">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
